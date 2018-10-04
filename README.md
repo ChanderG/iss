@@ -13,7 +13,7 @@ What if you could simply copy paste your fuzzy-finder like onto a fresh linux ma
 
 Copy the following and paste into your bash:
 ```
-iss(){ i=`tee`;l=$((`tput lines`-3));t=/dev/tty;e=echo;while :;do clear >$t;>&2 $e; $e "$i" | { grep -i --color=always "$w"; yes '' | head -n$l; } |& head -n$l 2>/dev/null | tac >$t; >&2 $e;IFS= read -p "input> $w" -n1 c <$t;case $c in $'\e') >&2 $e;exit;;$'') w=${w: : -1};;$'') $e "$i" | grep -i "$w" | head -n1; exit;;$' ') w+=".*";;*) w+=$c;esac;done }
+iss(){ i=`tee`;l=$((`tput lines`-3));t=/dev/tty;e=echo;while :;do clear >$t;>&2 $e; $e "$i" | { grep -i --color=always "$w"; yes '' | head -n$l; } |& head -n$l 2>/dev/null | tac >$t; >&2 $e;IFS= read -p "input> $w" -n1 c <$t;case $c in $'\e') >&2 $e;exit;;$'\177') w=${w: : -1};;$'') $e "$i" | grep -i "$w" | head -n1; exit;;$' ') w+=".*";;*) w+=$c;esac;done }
 ```
 
 No, seriously. Also look at the iss script for the actual un-minified (more like un-mashed) version.

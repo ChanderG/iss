@@ -7,7 +7,7 @@ while :;do
 	IFS= read -p "input> $w" -n1 c <$t
 	case $c in 
 		$'\e') >&2 $e;exit;;
-		$'') w=${w: : -1};;
+		$'\177') w=${w: : -1};;
 		$'') $e "$i" | grep -i "$w" | head -n1; exit;;
 		$' ') w+=".*";;
 		*) w+=$c;
