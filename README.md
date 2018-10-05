@@ -11,9 +11,16 @@ What if you could simply copy paste your fuzzy-finder onto a fresh linux machine
 
 ## Install
 
-Copy and paste the following into bash:
+Copy and paste the variant of interest into bash. That's it.
+
+Single select (Enter chooses the last visible entry):
 ```
 iss(){ i=`tee`;l=$((`tput lines`-3));t=/dev/tty;e=echo;while :;do clear >$t;>&2 $e; $e "$i" | { grep -i --color=always "$w"; yes '' | head -n$l; } |& head -n$l 2>/dev/null | tac >$t; >&2 $e;IFS= read -p "input> $w" -n1 c <$t;case $c in $'\e') >&2 $e;exit;;$'\177') w=${w: : -1};;$'') $e "$i" | grep -i "$w" | head -n1; exit;;$' ') w+=".*";;*) w+=$c;esac;done }
+```
+
+or Multi select (Enter chooses all visible entries):
+```
+iss(){ i=`tee`;l=$((`tput lines`-3));t=/dev/tty;e=echo;while :;do clear >$t;>&2 $e; $e "$i" | { grep -i --color=always "$w"; yes '' | head -n$l; } |& head -n$l 2>/dev/null | tac >$t; >&2 $e;IFS= read -p "input> $w" -n1 c <$t;case $c in $'\e') >&2 $e;exit;;$'\177') w=${w: : -1};;$'') $e "$i" | grep -i "$w"; exit;;$' ') w+=".*";;*) w+=$c;esac;done }
 ```
 
 No, seriously. Fine, if you think copy-pasting something from a random repo is a bad idea, read and source the `iss` script.
@@ -25,7 +32,7 @@ Simple use in a pipe:
 <some command> | iss | <some more commands>
 ```
 
-Type to filter down. Accepts grep regex. By default grep's `-i` flag is set (meaning case insensitive). `Backspace` clears last input. `Esc` quits without accepting any input. `Enter` accepts last input and quits. `Space` enters `.*` for ease of use.
+Type to filter down. Accepts grep regex. By default grep's `-i` flag is set (meaning case insensitive). `Backspace` clears last input. `Esc` quits without accepting any input. `Enter` accepts all visible entries or last entry (depending on the variant) and quits. `Space` enters `.*` for ease of use.
 
 ## Limitations
 
